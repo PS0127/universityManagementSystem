@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace universityManagementSystem.Pages
+namespace universityManagementSystem.Pages.Teachers
 {
-    public class StudentsModel : PageModel
+    public class TeachersModel : PageModel
     {
         public void OnGet()
         {
