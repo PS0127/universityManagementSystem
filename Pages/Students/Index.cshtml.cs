@@ -8,5 +8,7 @@ namespace universityManagementSystem.Pages.Students
         public void OnGet()
         {
         }
+
+        
     }
 }
