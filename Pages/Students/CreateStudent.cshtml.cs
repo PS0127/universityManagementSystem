@@ -6,7 +6,7 @@ namespace universityManagementSystem.Pages.Students
 {
     public class CreateStudentModel : PageModel
     {
-        
+        public 
         public void OnGet()
         {
         }
