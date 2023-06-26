@@ -16,3 +16,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#studentTable:hover {
+    background-color: Gainsboro;
+}
+
+tr:hover > td .studentButtons {
+    visibility: visible;
+}
+
+.studentButtons {
+    visibility: hidden;
+}

@@ -20,18 +20,25 @@
         </tr>
     </thead>
 
-    @foreach(var student in Model.Allstudents)
+    @foreach (var student in Model.Allstudents)
     {
-        <tr>
+        <tr id="studentTable">
             <td>@student.Id</td>
             <td>@student.firstName</td>
             <td>@student.lastName</td>
             <td>@student.course</td>
             <td>
-                <a class="btn btn-primary btn-sm" href="/Students/Edit?id=">Edit</a>
-                <a class="btn btn-danger btn-sm" href="/Students/Delete?id=">Delete</a>
+                <div class="studentButtons">
+
+                    <a class="btn btn-primary btn-sm" href="/Students/Edit?id=">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="/Students/Delete?id=">Delete</a>
+
+                </div>
+
             </td>
         </tr>
     }
+        
 </table>
+    
 
