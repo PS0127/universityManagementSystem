@@ -73,6 +73,10 @@ namespace universityManagementSystem.Pages.Students
             }
 
             successMessage = "Successfully added new student";
+
+            newStudent.firstName="";
+            newStudent.lastName="";
+            newStudent.course="";
         }
     }
 }
