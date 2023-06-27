@@ -1,0 +1,42 @@
+﻿@page 
+@using MySql.Data.MySqlClient;
+
+@{
+    try
+    {
+        String ID = Request.Query["id"];
+        String connectionString = "Server=managementsystem.cac8ficgdlsa.us-east-1.rds.amazonaws.com,3306; Database=sys; User Id = admin; Password=vPvdHKV4Ac8zC2uP";
+
+        String Query = "DELETE FROM students WHERE StudentID=" + ID + ";";
+        
+
+        MySqlConnection conn = new MySqlConnection(connectionString);
+
+        MySqlCommand command = new MySqlCommand(Query, conn);
+
+        MySqlDataReader Reader;
+
+        conn.Open();
+
+        Reader = command.ExecuteReader();
+
+
+        while (Reader.Read())
+        {
+
+        }
+        conn.Close();
+
+
+        Response.Redirect("/Students/Index");
+
+
+
+    }
+
+    catch (Exception ex)
+    {
+        
+    }
+
+}
