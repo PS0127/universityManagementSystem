@@ -8,6 +8,28 @@
 
 <h2>Students</h2>
 
+
+
+<label for="filter">Sort by:</label>
+
+<select name="filter" id="filter" onchange="gotopage(this)">
+    
+    <option value="idasc">ID (Ascending)</option>
+    <option value="iddesc">ID (Descending)</option>
+    <option value="firstnameASC">First Name (Ascending)</option>
+    <option value="firstnameDESC">First Name (Descending)</option>
+    <option value="lastnameASC">Last Name (Ascending)</option>
+    <option value="lasttnameDESC">Last Name (Descending)</option>
+    <option value="course">Course</option>
+</select>
+
+<script type="text/javascript">
+    function gotopage(filter) {
+        var value = filter.options[filter.selectedIndex].value;
+        window.location.href = "/Students?sortby="+value;
+    }
+</script>
+
 <a class="btn btn-primary btn-sm" href="/Students/Create">New Student</a> <!-- button for adding new students -->
 
 <table class="table">

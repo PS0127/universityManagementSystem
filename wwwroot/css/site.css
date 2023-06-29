@@ -28,3 +28,8 @@ tr:hover > td .studentButtons {
 .studentButtons {
     visibility: hidden;
 }
+
+#filter {
+    width: 150px;
+    height: 30px;
+}
