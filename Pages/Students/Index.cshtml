@@ -7,32 +7,20 @@
 <br />
 
 <h2>Students</h2>
-
-
-
-<label for="filter">Sort by:</label>
-
-<select name="filter" id="filter" onchange="gotopage(this)">
-    
-    <option value="idasc">ID (Ascending)</option>
-    <option value="iddesc">ID (Descending)</option>
-    <option value="firstnameASC">First Name (Ascending)</option>
-    <option value="firstnameDESC">First Name (Descending)</option>
-    <option value="lastnameASC">Last Name (Ascending)</option>
-    <option value="lasttnameDESC">Last Name (Descending)</option>
-    <option value="course">Course</option>
-</select>
-
-<script type="text/javascript">
-    function gotopage(filter) {
-        var value = filter.options[filter.selectedIndex].value;
-        window.location.href = "/Students?sortby="+value;
-    }
-</script>
-
 <a class="btn btn-primary btn-sm" href="/Students/Create">New Student</a> <!-- button for adding new students -->
 
-<table class="table">
+<select name="options" id="options" onchange="sortTable()">
+
+    <option value="idasc">Sort by: ID - Low to High</option>
+    <option value="iddesc">Sort by: ID - High to Low</option>
+    <option value="firstnameasc">Sort by: First Name - A to Z</option>
+    <option value="firstnamedesc">Sort by: First Name - Z to A</option>
+    <option value="lastnameasc">Sort by: Last Name - A to Z</option>
+    <option value="lasttnamedesc">Sort by: Last Name - Z to A</option>
+    <option value="course">Sort by: Course</option>
+</select>
+
+<table class="table" id="studentsTable">
     <thead>
         <tr>
             <th>ID</th>
@@ -42,9 +30,10 @@
         </tr>
     </thead>
 
+    <!-- Makes table row for each student -->
     @foreach (var student in Model.Allstudents)
     {
-        <tr id="studentTable">
+        <tr id="studentData">
             <td>@student.Id</td>
             <td>@student.firstName</td>
             <td>@student.lastName</td>
@@ -62,5 +51,104 @@
     }
         
 </table>
+
+<script>
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("studentsTable");
+        var options = document.getElementById("options").value;
+
+        // if statements to determine which column to filter
+        if (options.includes("id"))
+        {
+            n=0;
+        }
+        else if (options.includes("firstname"))
+        {
+            n=1;
+        }
+        else if (options.includes("lastname"))
+        {
+            n=2;
+        }
+        else if (options.includes("course"))
+        {
+            n=3;
+        }
+        switching = true;
+        // Set the sorting direction to ascending:
+        //dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /* Check if the two rows should switch place,
+                based on the direction, asc or desc: */
+                if (options.includes("asc")) {
+                    if (n != 0)
+                    {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                    else {
+                        if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+
+                } else if (options.includes("desc")) {
+                    if (n != 0)
+                    {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                    else {
+                        if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                    
+
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                // Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /* If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again. */
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+
+</script>
     
 
