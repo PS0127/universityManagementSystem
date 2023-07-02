@@ -57,7 +57,30 @@ namespace universityManagementSystem.Pages.Students
                 {
 
                 }
+
                 conn.Close();
+
+                // make new log message object and set data
+                LogMessage LogMessage = new LogMessage();
+                LogMessage.personType = "Student";
+                LogMessage.action = "Create";
+                LogMessage.date = "" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "";
+                
+                LogMessage.message = "New " + LogMessage.personType.ToLower() + " added with values (" + newStudent.firstName + ", " + newStudent.lastName + ", " + newStudent.course + ")";
+
+                String newQuery = "INSERT INTO logs (Person, Action, Date, Message) VALUES " +
+                    "('" + LogMessage.personType + "', '" + LogMessage.action + "', '" + LogMessage.date + "', '" + LogMessage.message + "');";
+
+                MySqlCommand cmd = new MySqlCommand(newQuery, conn);
+
+                MySqlDataReader Reader1;
+
+                conn.Open();
+
+                Reader1 = cmd.ExecuteReader();
+                conn.Close();
+
+                
 
 
 

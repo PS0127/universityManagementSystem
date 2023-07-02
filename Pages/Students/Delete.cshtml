@@ -7,8 +7,10 @@
         String ID = Request.Query["id"];
         String connectionString = "Server=managementsystem.cac8ficgdlsa.us-east-1.rds.amazonaws.com,3306; Database=sys; User Id = admin; Password=vPvdHKV4Ac8zC2uP";
 
-        String Query = "DELETE FROM students WHERE StudentID=" + ID + ";";
+        Student logStudent = new Student();
         
+        // Get student data for logs
+        String Query = "SELECT * FROM students WHERE StudentID=" + ID + ";";
 
         MySqlConnection conn = new MySqlConnection(connectionString);
 
@@ -23,10 +25,51 @@
 
         while (Reader.Read())
         {
+            logStudent.firstName = Reader.GetString(1);
+            logStudent.lastName = Reader.GetString(2);
+            logStudent.course = Reader.GetString(3);
+
 
         }
         conn.Close();
 
+        // Delete student from database
+        Query = "DELETE FROM students WHERE StudentID=" + ID + ";";
+
+        conn.Open();
+
+        MySqlCommand command1 = new MySqlCommand(Query, conn);
+
+        Reader = command1.ExecuteReader();
+
+
+        while (Reader.Read())
+        {
+
+        }
+        conn.Close();
+
+        
+        // Log message and store in database
+
+        LogMessage LogMessage = new LogMessage();
+        LogMessage.personType = "Student";
+        LogMessage.action = "Delete";
+        LogMessage.date = "" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "";
+
+        LogMessage.message = "" + LogMessage.personType + " has been deleted, values (" + logStudent.firstName + ", " + logStudent.lastName + ", " + logStudent.course + ")";
+
+        String newQuery = "INSERT INTO logs (Person, Action, Date, Message) VALUES " +
+        "('" + LogMessage.personType + "', '" + LogMessage.action + "', '" + LogMessage.date + "', '" + LogMessage.message + "');";
+
+        MySqlCommand cmd = new MySqlCommand(newQuery, conn);
+
+        MySqlDataReader Reader1;
+
+        conn.Open();
+
+        Reader1 = cmd.ExecuteReader();
+        conn.Close();
 
         Response.Redirect("/Students/Index");
 

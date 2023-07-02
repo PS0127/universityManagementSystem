@@ -33,7 +33,7 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Course</label>
         <div class="col-sm-6">
-            <select name="course" value="@Model.editStudent.course">
+            <select id ="selectCourse" name="course" value="@Model.editStudent.course">
                 <option value="none" selected disabled hidden>@Model.editStudent.course</option>
                 <option value="Computer Science">Computer Science</option>
                 <option value="Computer Animation">Computer Animation</option>
@@ -60,4 +60,5 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+
 
