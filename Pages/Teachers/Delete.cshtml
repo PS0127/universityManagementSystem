@@ -1,15 +1,14 @@
-﻿@page 
+﻿@page
 @using MySql.Data.MySqlClient;
-
 @{
     try
     {
         String ID = Request.Query["id"];
 
-        Student logStudent = new Student();
-        
-        // Get student data for logs
-        String Query = "SELECT * FROM students WHERE StudentID=" + ID + ";";
+        Teacher logTeacher = new Teacher();
+
+        // Get teacher data for logs
+        String Query = "SELECT * FROM teachers WHERE TeacherID=" + ID + ";";
 
         MySqlConnection conn = new MySqlConnection(Connection.conn);
 
@@ -21,19 +20,19 @@
 
         Reader = command.ExecuteReader();
 
-        // Get database data
+
         while (Reader.Read())
         {
-            logStudent.firstName = Reader.GetString(1);
-            logStudent.lastName = Reader.GetString(2);
-            logStudent.course = Reader.GetString(3);
+            logTeacher.firstName = Reader.GetString(1);
+            logTeacher.lastName = Reader.GetString(2);
+            logTeacher.department = Reader.GetString(3);
 
 
         }
         conn.Close();
 
-        // Delete student from database
-        Query = "DELETE FROM students WHERE StudentID=" + ID + ";";
+        // Delete teacher from database
+        Query = "DELETE FROM teachers WHERE TeacherID=" + ID + ";";
 
         conn.Open();
 
@@ -48,16 +47,15 @@
         }
         conn.Close();
 
-        
+
         // Log message and store in database
 
         LogMessage LogMessage = new LogMessage();
-        LogMessage.personType = "Student";
+        LogMessage.personType = "Teacher";
         LogMessage.action = "Delete";
         LogMessage.date = "" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "";
 
-        // Logged message
-        LogMessage.message = "" + LogMessage.personType + " has been deleted, values (" + logStudent.firstName + ", " + logStudent.lastName + ", " + logStudent.course + ")";
+        LogMessage.message = "" + LogMessage.personType + " has been deleted, values (" + logTeacher.firstName + ", " + logTeacher.lastName + ", " + logTeacher.department + ")";
 
         String newQuery = "INSERT INTO logs (Person, Action, Date, Message) VALUES " +
         "('" + LogMessage.personType + "', '" + LogMessage.action + "', '" + LogMessage.date + "', '" + LogMessage.message + "');";
@@ -71,7 +69,7 @@
         Reader1 = cmd.ExecuteReader();
         conn.Close();
 
-        Response.Redirect("/Students/Index");
+        Response.Redirect("/Teachers/Index");
 
 
 
@@ -79,7 +77,7 @@
 
     catch (Exception ex)
     {
-        
+
     }
 
 }

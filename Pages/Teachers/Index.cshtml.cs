@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 
-namespace universityManagementSystem.Pages.Students
+namespace universityManagementSystem.Pages.Teachers
 {
-    public class StudentsModel : PageModel
+    public class TeachersModel : PageModel
     {
+
         public string errorMessage = "";
         public string successMessage = "";
-        
-        public List<Student> Allstudents = new List<Student>();
+
+        public List<Teacher> Allteachers = new List<Teacher>();
+
         public void OnGet()
         {
 
-            // Select all students
+            // Select all teachers
 
             try
             {
 
-                String Query = "SELECT * FROM students";
+                String Query = "SELECT * FROM teachers";
 
                 MySqlConnection conn = new MySqlConnection(Connection.conn);
 
@@ -35,13 +35,13 @@ namespace universityManagementSystem.Pages.Students
 
                 while (Reader.Read())
                 {
-                    Student student = new Student();
-                    student.Id = Reader.GetInt32(0);
-                    student.firstName = Reader.GetString(1);
-                    student.lastName = Reader.GetString(2);
-                    student.course = Reader.GetString(3);
+                    Teacher teacher = new Teacher();
+                    teacher.Id = Reader.GetInt32(0);
+                    teacher.firstName = Reader.GetString(1);
+                    teacher.lastName = Reader.GetString(2);
+                    teacher.department = Reader.GetString(3);
 
-                    Allstudents.Add(student);
+                    Allteachers.Add(teacher);
 
                 }
                 conn.Close();
@@ -59,7 +59,5 @@ namespace universityManagementSystem.Pages.Students
                 return;
             }
         }
-
-        
     }
 }

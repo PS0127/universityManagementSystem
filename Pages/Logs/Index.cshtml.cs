@@ -12,11 +12,10 @@ namespace universityManagementSystem.Pages.Logs
 
             try
             {
-                String connectionString = "Server=managementsystem.cac8ficgdlsa.us-east-1.rds.amazonaws.com,3306; Database=sys; User Id = admin; Password=vPvdHKV4Ac8zC2uP";
 
                 String Query = "SELECT * FROM logs";
 
-                MySqlConnection conn = new MySqlConnection(connectionString);
+                MySqlConnection conn = new MySqlConnection(Connection.conn);
 
                 MySqlCommand command = new MySqlCommand(Query, conn);
 

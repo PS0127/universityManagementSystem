@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
 
-namespace universityManagementSystem.Pages.Students
+namespace universityManagementSystem.Pages.Teachers
 {
     public class EditModel : PageModel
     {
-        public Student editStudent = new Student();
+
+
+        public Teacher editTeacher = new Teacher();
 
         public string errorMessage = "";
         public string successMessage = "";
@@ -18,12 +19,12 @@ namespace universityManagementSystem.Pages.Students
         {
             String ID = Request.Query["id"];
 
-            
+
 
             try
             {
 
-                String Query = "SELECT * FROM students WHERE StudentID = " + ID;
+                String Query = "SELECT * FROM teachers WHERE TeacherID = " + ID;
 
                 MySqlConnection conn = new MySqlConnection(Connection.conn);
 
@@ -37,11 +38,11 @@ namespace universityManagementSystem.Pages.Students
 
 
                 while (Reader.Read())
-                { 
+                {
                     // Saves database contents into new object for page to show
-                    editStudent.firstName = Reader.GetString(1);
-                    editStudent.lastName = Reader.GetString(2);
-                    editStudent.course = Reader.GetString(3);
+                    editTeacher.firstName = Reader.GetString(1);
+                    editTeacher.lastName = Reader.GetString(2);
+                    editTeacher.department = Reader.GetString(3);
 
 
                 }
@@ -57,7 +58,7 @@ namespace universityManagementSystem.Pages.Students
             }
 
             // Checks whether student info is null or empty which means no student found
-            if(editStudent.firstName == null || editStudent.firstName.Length == 0)
+            if (editTeacher.firstName == null || editTeacher.firstName.Length == 0)
             {
                 errorMessage = "No student found";
                 return;
@@ -70,18 +71,18 @@ namespace universityManagementSystem.Pages.Students
         {
             String ID = Request.Query["id"];
 
-            editStudent.firstName = Request.Form["firstname"];
-            editStudent.lastName = Request.Form["lastname"];
-            editStudent.course = Request.Form["course"];
+            editTeacher.firstName = Request.Form["firstname"];
+            editTeacher.lastName = Request.Form["lastname"];
+            editTeacher.department = Request.Form["department"];
 
 
             try
             {
 
 
-                // get old student data
+                // get old teacher data
 
-                String Query2 = "SELECT * FROM students WHERE StudentID = " + ID;
+                String Query2 = "SELECT * FROM teachers WHERE TeacherID = " + ID;
 
                 MySqlConnection conn = new MySqlConnection(Connection.conn);
 
@@ -93,14 +94,14 @@ namespace universityManagementSystem.Pages.Students
 
                 Reader = command1.ExecuteReader();
 
-                Student logStudent = new Student();
+                Teacher logTeacher = new Teacher();
 
                 while (Reader.Read())
                 {
                     // Saves database contents into new object for page to show
-                    logStudent.firstName = Reader.GetString(1);
-                    logStudent.lastName = Reader.GetString(2);
-                    logStudent.course = Reader.GetString(3);
+                    logTeacher.firstName = Reader.GetString(1);
+                    logTeacher.lastName = Reader.GetString(2);
+                    logTeacher.department = Reader.GetString(3);
 
 
                 }
@@ -108,30 +109,28 @@ namespace universityManagementSystem.Pages.Students
 
 
 
-                // Store new student data into database
-                Debug.WriteLine("course is "+editStudent.course);
+                // Store new teacher data into database
                 string Query = "";
-                if (editStudent.course != null)
+                if (editTeacher.department != null)
                 {
-  
-                    Query = "UPDATE students SET" +
-                        " FirstName = '" + editStudent.firstName + "'," +
-                        " LastName = '" + editStudent.lastName + "'," +
-                        " Course = '" + editStudent.course+ "'" +
-                        " WHERE StudentID = " + ID + ";";
+
+                    Query = "UPDATE teachers SET" +
+                        " FirstName = '" + editTeacher.firstName + "'," +
+                        " LastName = '" + editTeacher.lastName + "'," +
+                        " Department = '" + editTeacher.department+ "'" +
+                        " WHERE TeacherID = " + ID + ";";
 
                 }
-                else 
+                else
                 {
-                    
-                    Query = "UPDATE students SET" +
-                        " FirstName = '" + editStudent.firstName + "'," +
-                        " LastName = '" + editStudent.lastName + "'" +
-                        " WHERE StudentID = " + ID + ";";
+
+                    Query = "UPDATE teachers SET" +
+                        " FirstName = '" + editTeacher.firstName + "'," +
+                        " LastName = '" + editTeacher.lastName + "'" +
+                        " WHERE TeacherID = " + ID + ";";
                 }
 
 
-                Debug.WriteLine(Query);
 
                 MySqlCommand command = new MySqlCommand(Query, conn);
 
@@ -152,21 +151,21 @@ namespace universityManagementSystem.Pages.Students
                 // make new log message object and set data, then store in database
 
                 LogMessage LogMessage = new LogMessage();
-                LogMessage.personType = "Student";
+                LogMessage.personType = "Teacher";
                 LogMessage.action = "Edit";
                 LogMessage.date = "" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "";
 
 
-                // if statements to check whether course is empty/null and if so then no change has been made and can use old course data
-                if (editStudent.course != null)
+                // if statements to check whether course is empty/null and if so then no change has been made and can use old department data
+                if (editTeacher.department != null)
                 {
-                    LogMessage.message = "" + LogMessage.personType + " edited, from values (" + logStudent.firstName + ", " + logStudent.lastName + ", " + logStudent.course + ")" +
-                    " to values (" + editStudent.firstName + ", " + editStudent.lastName + ", " + editStudent.course + ")";
+                    LogMessage.message = "" + LogMessage.personType + " edited, from values (" + logTeacher.firstName + ", " + logTeacher.lastName + ", " + logTeacher.department + ")" +
+                    " to values (" + editTeacher.firstName + ", " + editTeacher.lastName + ", " + editTeacher.department + ")";
                 }
                 else
                 {
-                    LogMessage.message = "" + LogMessage.personType + " edited, from values (" + logStudent.firstName + ", " + logStudent.lastName + ", " + logStudent.course + ")" +
-                    " to values (" + editStudent.firstName + ", " + editStudent.lastName + ", " + logStudent.course + ")";
+                    LogMessage.message = "" + LogMessage.personType + " edited, from values (" + logTeacher.firstName + ", " + logTeacher.lastName + ", " + logTeacher.department + ")" +
+                    " to values (" + editTeacher.firstName + ", " + editTeacher.lastName + ", " + logTeacher.department + ")";
                 }
 
                 String newQuery = "INSERT INTO logs (Person, Action, Date, Message) VALUES " +
@@ -186,7 +185,7 @@ namespace universityManagementSystem.Pages.Students
 
 
                 successMessage = "Successfully updated";
-                Response.Redirect("/Students/Index");
+                Response.Redirect("/Teachers/Index");
 
 
 
@@ -201,7 +200,5 @@ namespace universityManagementSystem.Pages.Students
             }
 
         }
-
-        
     }
 }

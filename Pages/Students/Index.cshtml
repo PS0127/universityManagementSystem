@@ -33,7 +33,7 @@
     <!-- Makes table row for each student -->
     @foreach (var student in Model.Allstudents)
     {
-        <tr id="studentData">
+        <tr id="dataTable">
             <td>@student.Id</td>
             <td>@student.firstName</td>
             <td>@student.lastName</td>
@@ -55,7 +55,7 @@
 <script>
     function sortTable() {
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("studentsTable");
+        table = document.getElementById("dataTable");
         var options = document.getElementById("options").value;
 
         // if statements to determine which column to filter

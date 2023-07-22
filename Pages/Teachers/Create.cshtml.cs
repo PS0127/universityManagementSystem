@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq.Expressions;
-using System.Net.Security;
 using MySql.Data.MySqlClient;
-using System.Diagnostics;
 
-namespace universityManagementSystem.Pages.Students
+namespace universityManagementSystem.Pages.Teachers
 {
-    public class CreateStudentModel : PageModel
+    public class CreateModel : PageModel
     {
-        public Student newStudent = new Student();
+
+        public Teacher newTeacher = new Teacher();
 
         public string errorMessage = "";
         public string successMessage = "";
@@ -22,24 +19,24 @@ namespace universityManagementSystem.Pages.Students
         public void OnPost()
         {
             // Gets form info from page into object
-            newStudent.firstName = Request.Form["firstname"];
-            newStudent.lastName = Request.Form["lastname"];
-            newStudent.course = Request.Form["course"];
+            newTeacher.firstName = Request.Form["firstname"];
+            newTeacher.lastName = Request.Form["lastname"];
+            newTeacher.department = Request.Form["department"];
 
-            if (newStudent.firstName.Length == 0 || newStudent.lastName.Length == 0 || newStudent.course.Length == 0)
+            if (newTeacher.firstName.Length == 0 || newTeacher.lastName.Length == 0 || newTeacher.department.Length == 0)
             {
                 errorMessage = "All fields are required";
                 return;
             }
 
 
-            // Store new student into database
+            // Store new teacher into database
 
             try
             {
 
-                String Query = "INSERT INTO students (FirstName, LastName, Course) VALUES " +
-                                              "('" + newStudent.firstName+ "', " + "'" + newStudent.lastName + "', " + "'" + newStudent.course+"');";
+                String Query = "INSERT INTO teachers (FirstName, LastName, Department) VALUES " +
+                                              "('" + newTeacher.firstName+ "', " + "'" + newTeacher.lastName + "', " + "'" + newTeacher.department+"');";
 
                 MySqlConnection conn = new MySqlConnection(Connection.conn);
 
@@ -51,7 +48,7 @@ namespace universityManagementSystem.Pages.Students
 
                 Reader = command.ExecuteReader();
 
-                
+
                 while (Reader.Read())
                 {
 
@@ -61,11 +58,11 @@ namespace universityManagementSystem.Pages.Students
 
                 // make new log message object and set data
                 LogMessage LogMessage = new LogMessage();
-                LogMessage.personType = "Student";
+                LogMessage.personType = "Teacher";
                 LogMessage.action = "Create";
                 LogMessage.date = "" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "";
-                
-                LogMessage.message = "New " + LogMessage.personType.ToLower() + " added with values (" + newStudent.firstName + ", " + newStudent.lastName + ", " + newStudent.course + ")";
+
+                LogMessage.message = "New " + LogMessage.personType.ToLower() + " added with values (" + newTeacher.firstName + ", " + newTeacher.lastName + ", " + newTeacher.department + ")";
 
                 String newQuery = "INSERT INTO logs (Person, Action, Date, Message) VALUES " +
                     "('" + LogMessage.personType + "', '" + LogMessage.action + "', '" + LogMessage.date + "', '" + LogMessage.message + "');";
@@ -79,7 +76,7 @@ namespace universityManagementSystem.Pages.Students
                 Reader1 = cmd.ExecuteReader();
                 conn.Close();
 
-                
+
 
 
 
@@ -88,17 +85,17 @@ namespace universityManagementSystem.Pages.Students
 
             }
 
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 errorMessage = ex.Message;
                 return;
             }
 
-            successMessage = "Successfully added new student";
+            successMessage = "Successfully added new teacher";
 
-            newStudent.firstName="";
-            newStudent.lastName="";
-            newStudent.course="";
+            newTeacher.firstName="";
+            newTeacher.lastName="";
+            newTeacher.department="";
         }
     }
 }
